@@ -1,0 +1,70 @@
+-- Animations Browy by Browy
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+-- Crear GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "AnimationsBrowy"
+ScreenGui.Parent = game.CoreGui
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0, 250, 0, 120)
+MainFrame.Position = UDim2.new(0.5, -125, 0.5, -60)
+MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+MainFrame.BorderSizePixel = 0
+MainFrame.Parent = ScreenGui
+
+local UICorner = Instance.new("UICorner", MainFrame)
+UICorner.CornerRadius = UDim.new(0, 12)
+
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.BackgroundTransparency = 1
+Title.Text = "Animations Browy"
+Title.TextColor3 = Color3.fromRGB(255,255,255)
+Title.TextScaled = true
+Title.Font = Enum.Font.GothamBold
+Title.Parent = MainFrame
+
+local Button = Instance.new("TextButton")
+Button.Size = UDim2.new(0.8, 0, 0, 45)
+Button.Position = UDim2.new(0.1, 0, 0.5, 0)
+Button.Text = "Start Animation"
+Button.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+Button.TextColor3 = Color3.fromRGB(255,255,255)
+Button.TextScaled = true
+Button.Font = Enum.Font.GothamBold
+Button.Parent = MainFrame
+
+local UICorner2 = Instance.new("UICorner", Button)
+UICorner2.CornerRadius = UDim.new(0, 10)
+
+-- Animación Adidas (ID ejemplo, puedes cambiarla si quieres otra)
+local animationId = "rbxassetid://507771019"
+
+local function playAnimation(char)
+    local hum = char:WaitForChild("Humanoid")
+    
+    local anim = Instance.new("Animation")
+    anim.AnimationId = animationId
+    
+    local track = hum:LoadAnimation(anim)
+    track.Looped = true
+    track:Play()
+end
+
+-- Mantener animación aunque muera
+player.CharacterAdded:Connect(function(newChar)
+    wait(1)
+    if _G.BrowyAnimationActive then
+        playAnimation(newChar)
+    end
+end)
+
+Button.MouseButton1Click:Connect(function()
+    _G.BrowyAnimationActive = true
+    playAnimation(character)
+    ScreenGui.Enabled = false
+end)
